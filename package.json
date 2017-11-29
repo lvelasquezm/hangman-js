@@ -1,0 +1,20 @@
+{
+  "name": "hangman",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "node server.js",
+    "test": "mocha hangman-tests.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "express": "^4.16.2",
+    "lodash": "^4.17.4",
+    "mocha": "^4.0.1",
+    "morgan": "^1.9.0"
+  }
+}
