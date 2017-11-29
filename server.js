@@ -7,13 +7,13 @@ const app = express();
 app.use(morgan('dev'));
 app.use(require('body-parser').text());
 
-app.get('/start', (req,res,next) => {
+app.get('/start', (req, res, next) => {
   HangmanGame.createNew().then(game => {
     res.json(game.encode());
-  },next);
+  }, next);
 })
 
-app.post('/guess/:guess', (req,res,next) => {
+app.post('/guess/:guess', (req, res, next) => {
   let game = HangmanGame.decode(req.body);
   let correct = game.guess(req.params.guess);
   res.json(Object.assign({correct}, game.encode()));

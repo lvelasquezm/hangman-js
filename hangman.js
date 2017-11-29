@@ -17,10 +17,12 @@ class HangmanGame {
 
   get hasWon() {
     // TODO: Implement this. Return True if the game state is such that the user has won, and false otherwise
+    return this.word.toLowerCase() === this.progress.toLowerCase();
   }
 
   get hasLost() {
     // TODO: Implement this. Return True if the game state is such that the user has lost, and false otherwise
+    return this.fails === FAILS_TO_LOSE;
   }
 
   static createNew() {
@@ -41,6 +43,7 @@ class HangmanGame {
     // If guess in in the word/phrase being guessed, return true, and update this.progress to reflect the new known letter positions
     // Otherwise, increment fails
     //  Return true for a good guess, and false otherwise
+    this.fails++;
     return false;
   }
 
@@ -49,7 +52,12 @@ class HangmanGame {
       state: this.hasWon ? 'won' : this.hasLost ? 'lost' : 'playing',
       progress: this.progress,
       fails: this.fails,
-      session: crypt.encrypt({ /* TODO fill this with values you want to persist */ })
+      session: crypt.encrypt({
+        word: this.word,
+        progress: this.progress,
+        fails: this.fails
+        /* TODO fill this with values you want to persist */
+      })
       //TODO: What values do you want to hold as "session" values?
       //These are values that are encrypted and represent your game state that should not be visible to the opponent nor tampered with
     };
@@ -57,6 +65,8 @@ class HangmanGame {
 
   static decode(session) {
     //TODO: Construct a HangmanGame based on the session values you've stored above
+    let sessionObj = crypt.decrypt(session);
+    return new HangmanGame(sessionObj.progress, sessionObj.fails, sessionObj.word);
   }
 
 }

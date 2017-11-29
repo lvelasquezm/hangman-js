@@ -12,7 +12,8 @@ let session = '';
 // TODO: Replace this callback with a promise
 makeStartRequest( (err, game) => {
   if(err) return reportError(err);
-  if(!game.progress) return reportError('TODO: Implement HangmanGame.createGame')
+  if(!game.progress) return reportError('TODO: Implement HangmanGame.createNew');
+
   console.log('Welcome to hangman. Your starting letters are: ', game.progress);
   session = game.session;
   prompt();
@@ -25,6 +26,7 @@ function prompt() {
       console.log('You can only answer with a single letter.');
       return prompt();
     }
+
     makeGuessRequest(answer, (err, game) => {
       if(err) return reportError(err);
       session = game.session;
@@ -83,7 +85,7 @@ function makeGuessRequest(guess, cb) {
     method: 'POST',
     host,
     port,
-    path: '/guess/'+guess,
+    path: '/guess/' + guess,
     headers: { 'Content-Type': 'text/plain' }
    },response => {
      let data = '';
@@ -95,7 +97,8 @@ function makeGuessRequest(guess, cb) {
        catch(e) { cb(e) }
      })
      response.on('error', cb);
-   })
+   });
+
   req.write(session);
   req.end();
 }
