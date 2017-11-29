@@ -37,19 +37,20 @@ function prompt() {
 }
 
 function status(game) {
-  if(game.state == 'won') {
-    console.log('You WON!!!!')
-    process.exit(0);
-  }
-  else if(game.state == 'lost') {
-    console.log('You LOST :(')
-    process.exit(0);
-  }
-  else {
-    if(game.correct) console.log('Correct')
-    else console.log('Wrong')
-    console.log(game.progress, '   errors: ', game.fails);
-    prompt();
+  switch(game.state) {
+    case 'won':
+      console.log('You WON!!!!');
+      console.log(`You completed the phrase '${game.progress}'`);
+      process.exit(0);
+      break;
+    case 'lost':
+      console.log(`You reached ${game.fails} fails, you LOST :(`)
+      process.exit(0);
+      break;
+    default:
+      game.correct ? console.log('Correct!') : console.log('Wrong!');
+      console.log(`Your progress: ${game.progress}`, ` Errors: ${game.fails}`);
+      prompt();
   }
 }
 

@@ -40,9 +40,25 @@ class HangmanGame {
 
   guess(guess) {
     //TODO Implement this. Guess is the letter being guessed.
-    // If guess in in the word/phrase being guessed, return true, and update this.progress to reflect the new known letter positions
+    // If guess is in the word/phrase being guessed, return true, and update this.progress to reflect the new known letter positions
     // Otherwise, increment fails
     //  Return true for a good guess, and false otherwise
+
+    // guess exists in current word
+    if(this.word.indexOf(guess) !== -1) {
+      const wordChunks = this.word.split('');
+      let progressChunks = this.progress.split('');
+
+      wordChunks.forEach((char, index) => {
+        if(char === guess) progressChunks[index] = char;
+      });
+
+      this.progress = progressChunks.join('');
+
+      console.log(this.progress);
+      return true;
+    }
+
     this.fails++;
     return false;
   }
