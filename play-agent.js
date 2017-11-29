@@ -23,12 +23,14 @@ function prompt() {
   rl.question('What is your next guess? ', (answer) => {
     answer = answer.trim().toLowerCase();
 
+    // Validation for empty spaces
     if(answer === '') {
       console.log('Your guess cannot be a white space.');
       console.log('\r');
       return prompt();
     }
 
+    // Validation for more than 1 letter
     if(answer.length > 1) {
       console.log('You can only answer with a single letter.');
       console.log('\r');
