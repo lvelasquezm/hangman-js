@@ -25,8 +25,13 @@ class HangmanGame {
 
   static createNew() {
     return wordList.random().then(word => {
-      let progress = '' //TODO: Progress should be the word with letters replaced with underscores, and spaces as they were.
+      //TODO: Progress should be the word with letters replaced with underscores, and spaces as they were.
       // e.g. "variety of wildlife" becomes "_______ __ ________"
+      let progress = word.split('').map(char => {
+        if(char === ' ') return ' ';
+        else return '_';
+      }).join('');
+
       return new HangmanGame(progress, 0, word);
     });
   }
