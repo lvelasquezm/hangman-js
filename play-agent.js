@@ -21,13 +21,13 @@ makeStartRequest( (err, game) => {
 
 function prompt() {
   // TODO: Replace this callback with a promise
-  rl.question('What is your next guess?', (answer) => {
+  rl.question('What is your next guess? ', (answer) => {
     if(answer.length > 1) {
       console.log('You can only answer with a single letter.');
       return prompt();
     }
 
-    makeGuessRequest(answer, (err, game) => {
+    makeGuessRequest(answer.toLowerCase(), (err, game) => {
       if(err) return reportError(err);
       session = game.session;
       status(game);
@@ -50,6 +50,7 @@ function status(game) {
     default:
       game.correct ? console.log('Correct!') : console.log('Wrong!');
       console.log(`Your progress: ${game.progress}`, ` Errors: ${game.fails}`);
+      console.log('\r');
       prompt();
   }
 }

@@ -19,5 +19,5 @@ exports.decrypt = function(code) {
   ;
   var decipher = crypto.createDecipheriv(algorithm, new Buffer(codeKey,'base64'),iv);
   var decrypted = decipher.update(encrypted, 'base64', 'utf8') + decipher.final('utf8');
-  return JSON.parse(decrypted);v.toString('base64') + ':' + crypted;
+  return JSON.parse(decrypted);
 };
