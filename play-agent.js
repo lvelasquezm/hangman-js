@@ -9,31 +9,39 @@ const rl = readline.createInterface({
 
 let session = '';
 
-// TODO: Replace this callback with a promise
-makeStartRequest( (err, game) => {
-  if(err) return reportError(err);
+makeStartRequest().then((game) => {
   if(!game.progress) return reportError('TODO: Implement HangmanGame.createNew');
 
   console.log('Welcome to hangman. Your starting letters are: ', game.progress);
   session = game.session;
   prompt();
+}).catch((e) => {
+  reportError(e);
 });
 
 function prompt() {
-  // TODO: Replace this callback with a promise
   rl.question('What is your next guess? ', (answer) => {
-    if(answer.length > 1) {
-      console.log('You can only answer with a single letter.');
+    answer = answer.trim().toLowerCase();
+
+    if(answer === '') {
+      console.log('Your guess cannot be a white space.');
+      console.log('\r');
       return prompt();
     }
 
-    makeGuessRequest(answer.toLowerCase(), (err, game) => {
-      if(err) return reportError(err);
+    if(answer.length > 1) {
+      console.log('You can only answer with a single letter.');
+      console.log('\r');
+      return prompt();
+    }
+
+    makeGuessRequest(answer).then((game) => {
       session = game.session;
       status(game);
+    }).catch((e) => {
+      reportError(e);
     });
-  })
-
+  });
 }
 
 function status(game) {
@@ -61,46 +69,48 @@ function reportError(err) {
   process.exit(1);
 }
 
-// TODO: Replace this callback with a promise
-function makeStartRequest(cb) {
-   http.request({
-    method: 'GET',
-    host,
-    port,
-    path: '/start'
-   },response => {
-     let data = '';
-     response.on('data',chunk => data += chunk)
-     response.on('end',() => {
-       try {
-         cb(null, JSON.parse(data));
-       }
-       catch(e) { cb(e) }
-     })
-     response.on('error', cb);
-   }).end()
+function makeStartRequest() {
+  return new Promise((resolve, reject) => {
+    let params = { method: 'GET', host, port, path: '/start' };
+
+    http.request(params, response => {
+      let data = '';
+      response.on('data', chunk => data += chunk);
+      response.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        }
+        catch(e) { reject(e); }
+      });
+      
+      response.on('error', () => reject('An error ocurred while connecting to the server.'));
+    }).end();
+  });
 }
 
-// TODO: Replace this callback with a promise
-function makeGuessRequest(guess, cb) {
-   let req = http.request({
-    method: 'POST',
-    host,
-    port,
-    path: '/guess/' + guess,
-    headers: { 'Content-Type': 'text/plain' }
-   },response => {
-     let data = '';
-     response.on('data',chunk => data += chunk)
-     response.on('end',() => {
-       try {
-         cb(null, JSON.parse(data));
-       }
-       catch(e) { cb(e) }
-     })
-     response.on('error', cb);
-   });
+function makeGuessRequest(guess) {
+  return new Promise((resolve, reject) => {
+    let params = { 
+      method: 'POST',
+      host,
+      port,
+      path: '/guess/' + guess,
+      headers: { 'Content-Type':  'text/plain' }
+    };
 
-  req.write(session);
-  req.end();
+    let req = http.request(params, response => {
+      let data = '';
+      response.on('data', chunk => data += chunk)
+      response.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        }
+        catch(e) { reject(e); }
+      });
+      response.on('error', () => reject('An error ocurred while connecting to the server.'));
+    });
+
+    req.write(session);
+    req.end();
+  });
 }

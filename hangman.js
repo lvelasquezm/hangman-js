@@ -5,7 +5,7 @@ const _ = require('lodash');
 const FAILS_TO_LOSE = 5;
 
 class HangmanGame {
-  
+
   constructor(progress, fails, word) {
     this.progress = progress;
     this.fails = fails;
