@@ -33,7 +33,7 @@ class HangmanGame {
 
   guess(guess) {
     // guess was correct
-    if(this.word.indexOf(guess) !== -1) {
+    if(this.word.includes(guess)) {
       const wordChunks = this.word.split('');
       let progressChunks = this.progress.split('');
 
