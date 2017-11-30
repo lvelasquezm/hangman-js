@@ -87,4 +87,4 @@ describe('hangman-game', () => {
     assert.include(encoded, { state: 'playing' });
   });
 
-});  
+});
