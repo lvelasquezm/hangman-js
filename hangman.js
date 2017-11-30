@@ -6,10 +6,11 @@ const FAILS_TO_LOSE = 5;
 
 class HangmanGame {
 
-  constructor(progress, fails, word) {
+  constructor(progress, fails, word, guesses) {
     this.progress = progress;
     this.fails = fails;
     this.word = word;
+    this.guesses = guesses;
   }
 
   get hasWon() {
@@ -27,11 +28,13 @@ class HangmanGame {
         else return '_';
       }).join('');
       
-      return new HangmanGame(progress, 0, word);
+      return new HangmanGame(progress, 0, word, []);
     });
   }
 
   guess(guess) {
+    this.guesses.push(guess);
+
     // guess was correct
     if(this.word.includes(guess)) {
       const wordChunks = this.word.split('');
@@ -55,17 +58,19 @@ class HangmanGame {
       state: this.hasWon ? 'won' : this.hasLost ? 'lost' : 'playing',
       progress: this.progress,
       fails: this.fails,
+      guesses: this.guesses,
       session: crypt.encrypt({
         word: this.word,
         progress: this.progress,
-        fails: this.fails
+        fails: this.fails,
+        guesses: this.guesses
       })
     };
   }
 
   static decode(session) {
     let sessionObj = crypt.decrypt(session);
-    return new HangmanGame(sessionObj.progress, sessionObj.fails, sessionObj.word);
+    return new HangmanGame(sessionObj.progress, sessionObj.fails, sessionObj.word, sessionObj.guesses);
   }
 
 }

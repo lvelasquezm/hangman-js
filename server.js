@@ -15,8 +15,13 @@ app.get('/start', (req, res, next) => {
 
 app.post('/guess/:guess', (req, res, next) => {
   let game = HangmanGame.decode(req.body);
-  let correct = game.guess(req.params.guess);
-  res.json(Object.assign({correct}, game.encode()));
+
+  if(game.guesses.includes(req.params.guess)) {
+    res.json(Object.assign({ isLetterGuessed: true }, game.encode()));
+  }else {
+    let correct = game.guess(req.params.guess);
+    res.json(Object.assign({correct}, game.encode()));
+  }
 });
 
 app.listen(port, () => {

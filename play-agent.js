@@ -45,6 +45,12 @@ function prompt() {
 }
 
 function status(game) {
+  // Check if current guess has already been guessed
+  if(game.isLetterGuessed) {
+    console.log('Letter already taken. Please take another one.\n');
+    return prompt();
+  }
+
   switch(game.state) {
     case 'won':
       console.log('You WON!!!!');

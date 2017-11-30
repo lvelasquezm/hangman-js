@@ -11,28 +11,28 @@ describe('hangman-game', () => {
   })
 
   it('guesses first letter correctly', () => {
-    let game = new HangmanGame('_______', 0, 'customs');
+    let game = new HangmanGame('_______', 0, 'customs', []);
     assert.isTrue(game.guess('c'));
     assert.equal('c______', game.progress);
     assert.equal(0, game.fails);
   });
 
   it('guesses multiple letters correctly', () => {
-    let game = new HangmanGame('_______', 0, 'customs');
+    let game = new HangmanGame('_______', 0, 'customs', []);
     assert.isTrue(game.guess('s'));
     assert.equal('__s___s', game.progress);
     assert.equal(0, game.fails);
   });
 
   it('handles bad guesses', () => {
-    let game = new HangmanGame('_______', 0, 'customs');
+    let game = new HangmanGame('_______', 0, 'customs', []);
     assert.isFalse(game.guess('a'));
     assert.equal('_______', game.progress);
     assert.equal(1, game.fails);
   });
 
   it('wins the game', () => {
-    let game = new HangmanGame('___', 0, 'win');
+    let game = new HangmanGame('___', 0, 'win', []);
     
     assert.isTrue(game.guess('w'));
     assert.equal('w__', game.progress);
@@ -50,7 +50,7 @@ describe('hangman-game', () => {
   });
 
   it('loses the game', () => {
-    let game = new HangmanGame('____', 0, 'lose');
+    let game = new HangmanGame('____', 0, 'lose', []);
     
     assert.isFalse(game.guess('z'));
     assert.equal('____', game.progress);
@@ -80,7 +80,7 @@ describe('hangman-game', () => {
   });
 
   it('encodes the game state', () => {
-    let game = new HangmanGame('_______', 0, 'customs');
+    let game = new HangmanGame('_______', 0, 'customs', []);
     let encoded = game.encode();
 
     assert.isObject(encoded);
