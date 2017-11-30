@@ -77,15 +77,15 @@ function makeStartRequest() {
 
     http.request(params, response => {
       let data = '';
-      response.on('data', chunk => data += chunk);
-      response.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        }
-        catch(e) { reject(e); }
-      });
-      
-      response.on('error', () => reject('An error ocurred while connecting to the server.'));
+      response
+        .on('data', chunk => data += chunk)
+        .on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          }
+          catch(e) { reject(e); }
+        })
+        .on('error', () => reject('An error ocurred while connecting to the server.'));
     }).end();
   });
 }
@@ -102,14 +102,15 @@ function makeGuessRequest(guess) {
 
     let req = http.request(params, response => {
       let data = '';
-      response.on('data', chunk => data += chunk)
-      response.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        }
-        catch(e) { reject(e); }
-      });
-      response.on('error', () => reject('An error ocurred while connecting to the server.'));
+      response
+        .on('data', chunk => data += chunk)
+        .on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          }
+          catch(e) { reject(e); }
+        })
+        .on('error', () => reject('An error ocurred while connecting to the server.'));
     });
 
     req.write(session);
