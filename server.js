@@ -16,6 +16,7 @@ app.get('/start', (req, res, next) => {
 app.post('/guess/:guess', (req, res, next) => {
   let game = HangmanGame.decode(req.body);
 
+  // Check if current guess has already been guessed
   if(game.guesses.includes(req.params.guess)) {
     res.json(Object.assign({ isLetterGuessed: true }, game.encode()));
   }else {
