@@ -25,15 +25,13 @@ function prompt() {
 
     // Validation for empty spaces
     if(answer === '') {
-      console.log('Your guess cannot be a white space.');
-      console.log('\r');
+      console.log('Your guess cannot be a white space.\n');
       return prompt();
     }
 
     // Validation for more than 1 letter
     if(answer.length > 1) {
-      console.log('You can only answer with a single letter.');
-      console.log('\r');
+      console.log('You can only answer with a single letter.\n');
       return prompt();
     }
 
@@ -59,8 +57,7 @@ function status(game) {
       break;
     default:
       game.correct ? console.log('Correct!') : console.log('Wrong!');
-      console.log(`Your progress: ${game.progress}`, ` Errors: ${game.fails}`);
-      console.log('\r');
+      console.log(`Your progress: ${game.progress}`, ` Errors: ${game.fails}\n`);
       prompt();
   }
 }
