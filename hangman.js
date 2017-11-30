@@ -9,7 +9,7 @@ class HangmanGame {
   constructor(progress, fails, word, guesses) {
     this.progress = progress;
     this.fails = fails;
-    this.word = word;
+    this.word = word.trim();
     this.guesses = guesses;
   }
 
@@ -23,11 +23,11 @@ class HangmanGame {
 
   static createNew() {
     return wordList.random().then(word => {
-      let progress = word.split('').map(char => {
+      let progress = word.trim().split('').map(char => {
         if(char === ' ') return ' ';
         else return '_';
       }).join('');
-      
+
       return new HangmanGame(progress, 0, word, []);
     });
   }

@@ -5,7 +5,7 @@ describe('hangman-game', () => {
 
   it('creates a new game', () => {
     return HangmanGame.createNew().then(game => {
-      assert.equal(game.word.length, game.progress.length);
+      assert.equal(game.word.trim().length, game.progress.length);
       assert.match(game.progress, /^[ _ ]+$/);
     });
   })
